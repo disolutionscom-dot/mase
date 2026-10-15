@@ -46,6 +46,17 @@ Faculty judges evaluate high-school and university student scientific research a
   - Real-time admin tracker monitoring how many projects each judge has scored.
   - Visual completion progress bars, category coverage badges, and last submission timestamps.
 
+- **🎯 Recharts Institutional Radar Chart**:
+  - Interactive multi-dimensional skill competency web grouping average performance metrics by school.
+  - Benchmarks institutions across **Innovation & Novelty**, **Technical Mastery**, **Presentation Skills**, and **Scientific Concept**.
+  - Dynamic overlay selector allowing side-by-side comparison of up to 6 schools simultaneously with distinct color signatures, dimension champions, and metric leaderboards.
+
+- **🛡️ Project 'Consistency Scores' & Statistical Anomaly Detection**:
+  - Real-time mathematical scoring consistency analysis based on standard deviation ($\sigma$) and score spread across multiple judges.
+  - Calibrated consistency index (0 - 100%) that automatically identifies judging anomalies (spread $\ge 5.0$ pts or $\sigma \ge 2.5$).
+  - Identifies outlier jurors and pinpoints the exact rubric dimension causing disagreement (e.g., Presentation delta vs Methodology).
+  - Side-by-side juror rubric audit drawer with criterion-by-criterion delta comparison and chief judge review flagging.
+
 - **🏆 Awards Ceremony Printout (Formatted PDF)**:
   - One-click print-ready summary of final winners, category podiums, top UAE schools, and jury sign-off lines for the closing ceremony.
 

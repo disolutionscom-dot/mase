@@ -11,11 +11,14 @@ import {
   CheckCircle2,
   Clock,
   ExternalLink,
-  ChevronRight,
   TrendingUp,
+  Target,
+  ShieldAlert,
 } from 'lucide-react';
 import { RankingsData, Evaluation, Participant, SystemSettings } from '../../types';
 import { RegionalPerformanceSection } from './RegionalPerformanceSection';
+import { SchoolRadarComparison } from './SchoolRadarComparison';
+import { ProjectConsistencyScorecard } from './ProjectConsistencyScorecard';
 
 interface LiveDashboardProps {
   rankings: RankingsData;
@@ -34,12 +37,35 @@ export const LiveDashboard: React.FC<LiveDashboardProps> = ({
   onRefresh,
   onSelectProject,
 }) => {
-  const [activeTab, setActiveTab] = useState<'top10' | 'categories' | 'schools' | 'emirates' | 'stream'>(
-    'top10'
-  );
+  const [activeTab, setActiveTab] = useState<
+    'top10' | 'categories' | 'schools' | 'radar' | 'consistency' | 'emirates' | 'stream'
+  >('top10');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedEmirateFilter, setSelectedEmirateFilter] = useState<string>('all');
   const [lastRefreshed, setLastRefreshed] = useState<string>(new Date().toLocaleTimeString());
+
+  // Count judging anomalies for badge
+  const anomalyCount = React.useMemo(() => {
+    const evalsByProject = new Map<string, number[]>();
+    evaluations.filter((e) => e.Status === 'Submitted').forEach((e) => {
+      const list = evalsByProject.get(e.ParticipantID) || [];
+      list.push(Number(e.Total));
+      evalsByProject.set(e.ParticipantID, list);
+    });
+    let count = 0;
+    evalsByProject.forEach((scores) => {
+      if (scores.length >= 2) {
+        const spread = Math.max(...scores) - Math.min(...scores);
+        const mean = scores.reduce((a, b) => a + b, 0) / scores.length;
+        const variance =
+          scores.reduce((sum, s) => sum + Math.pow(s - mean, 2), 0) /
+          (scores.length - 1);
+        const stdDev = Math.sqrt(variance);
+        if (spread >= 5.0 || stdDev >= 2.5) count++;
+      }
+    });
+    return count;
+  }, [evaluations]);
 
   // Auto-refresh timer every 15 seconds
   useEffect(() => {
@@ -238,6 +264,42 @@ export const LiveDashboard: React.FC<LiveDashboardProps> = ({
         >
           <Building2 className="w-4 h-4" />
           <span>School Standings</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('radar')}
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition ${
+            activeTab === 'radar'
+              ? 'bg-[#0B6E4F] text-white shadow-sm'
+              : 'bg-white text-gray-700 hover:bg-gray-100 border border-[#E2E8E4]'
+          }`}
+        >
+          <Target className="w-4 h-4 text-[#D4AF37]" />
+          <span>Institutional Radar</span>
+          <span className="bg-[#D4AF37]/20 text-[#B8860B] text-[10px] font-extrabold px-1.5 py-0.5 rounded-full">
+            Recharts
+          </span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('consistency')}
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition ${
+            activeTab === 'consistency'
+              ? 'bg-[#0B6E4F] text-white shadow-sm'
+              : 'bg-white text-gray-700 hover:bg-gray-100 border border-[#E2E8E4]'
+          }`}
+        >
+          <ShieldAlert className="w-4 h-4 text-rose-500" />
+          <span>Consistency &amp; Anomalies</span>
+          {anomalyCount > 0 ? (
+            <span className="bg-rose-500 text-white text-[10px] font-black px-1.5 py-0.2 rounded-full">
+              {anomalyCount} Flagged
+            </span>
+          ) : (
+            <span className="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-1.5 py-0.2 rounded-full">
+              Synced
+            </span>
+          )}
         </button>
 
         <button
@@ -475,54 +537,92 @@ export const LiveDashboard: React.FC<LiveDashboardProps> = ({
 
       {/* Tab 3: School Standings */}
       {activeTab === 'schools' && (
-        <div className="bg-white rounded-3xl border border-[#E2E8E4] shadow-sm overflow-hidden">
-          <div className="p-5 border-b border-[#E2E8E4] bg-[#F9FBFA]">
-            <h3 className="text-base font-bold text-[#11241C]">
-              School Performance Standings
-            </h3>
-            <p className="text-xs text-gray-500">
-              Ranked using {rankings.method.school} across all participating schools.
-            </p>
+        <div className="space-y-6">
+          <div className="bg-white rounded-3xl border border-[#E2E8E4] shadow-sm overflow-hidden">
+            <div className="p-5 border-b border-[#E2E8E4] bg-[#F9FBFA] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+              <div>
+                <h3 className="text-base font-bold text-[#11241C] flex items-center gap-2">
+                  <Building2 className="w-5 h-5 text-[#0B6E4F]" />
+                  <span>School Performance Standings</span>
+                </h3>
+                <p className="text-xs text-gray-500">
+                  Ranked using {rankings.method.school} across all participating schools.
+                </p>
+              </div>
+
+              <button
+                onClick={() => setActiveTab('radar')}
+                className="flex items-center gap-2 bg-[#E6F1EC] hover:bg-[#d8eade] text-[#0B6E4F] px-3.5 py-1.5 rounded-xl text-xs font-bold transition border border-[#0B6E4F]/20"
+              >
+                <Target className="w-4 h-4 text-[#0B6E4F]" />
+                <span>Open Multi-Skill Radar Benchmark</span>
+              </button>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs sm:text-sm">
+                <thead className="bg-[#F1F5F2] text-[#2C3F35] font-bold border-b border-[#E2E8E4]">
+                  <tr>
+                    <th className="py-3 px-4 w-12 text-center">Rank</th>
+                    <th className="py-3 px-4">School Name</th>
+                    <th className="py-3 px-4 text-center">Total Entries</th>
+                    <th className="py-3 px-4 text-center">Eligible Scored</th>
+                    <th className="py-3 px-4 text-right">Total Points</th>
+                    <th className="py-3 px-4 text-right">Performance Metric</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#EEF3F0]">
+                  {rankings.schoolRankings.map((s) => (
+                    <tr key={s.school} className="hover:bg-[#F9FBFA]">
+                      <td className="py-3.5 px-4 text-center font-bold font-mono">
+                        {s.rank}
+                      </td>
+                      <td className="py-3.5 px-4 font-bold text-[#11241C]">
+                        {s.school}
+                      </td>
+                      <td className="py-3.5 px-4 text-center font-mono">{s.projects}</td>
+                      <td className="py-3.5 px-4 text-center font-mono font-bold text-[#0B6E4F]">
+                        {s.eligible}
+                      </td>
+                      <td className="py-3.5 px-4 text-right font-mono">{s.totalPoints}</td>
+                      <td className="py-3.5 px-4 text-right font-mono font-bold text-base text-[#B8860B]">
+                        {s.metric}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs sm:text-sm">
-              <thead className="bg-[#F1F5F2] text-[#2C3F35] font-bold border-b border-[#E2E8E4]">
-                <tr>
-                  <th className="py-3 px-4 w-12 text-center">Rank</th>
-                  <th className="py-3 px-4">School Name</th>
-                  <th className="py-3 px-4 text-center">Total Entries</th>
-                  <th className="py-3 px-4 text-center">Eligible Scored</th>
-                  <th className="py-3 px-4 text-right">Total Points</th>
-                  <th className="py-3 px-4 text-right">Performance Metric</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#EEF3F0]">
-                {rankings.schoolRankings.map((s) => (
-                  <tr key={s.school} className="hover:bg-[#F9FBFA]">
-                    <td className="py-3.5 px-4 text-center font-bold font-mono">
-                      {s.rank}
-                    </td>
-                    <td className="py-3.5 px-4 font-bold text-[#11241C]">
-                      {s.school}
-                    </td>
-                    <td className="py-3.5 px-4 text-center font-mono">{s.projects}</td>
-                    <td className="py-3.5 px-4 text-center font-mono font-bold text-[#0B6E4F]">
-                      {s.eligible}
-                    </td>
-                    <td className="py-3.5 px-4 text-right font-mono">{s.totalPoints}</td>
-                    <td className="py-3.5 px-4 text-right font-mono font-bold text-base text-[#B8860B]">
-                      {s.metric}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          {/* Embedded Radar Section for institutional skill comparison */}
+          <div className="pt-2">
+            <SchoolRadarComparison
+              evaluations={evaluations}
+              participants={participants}
+            />
           </div>
         </div>
       )}
 
-      {/* Tab 4: Regional Performance */}
+      {/* Tab 4: Institutional Radar Benchmark (Dedicated Tab) */}
+      {activeTab === 'radar' && (
+        <SchoolRadarComparison
+          evaluations={evaluations}
+          participants={participants}
+        />
+      )}
+
+      {/* Tab 5: Judging Consistency & Anomalies (Dedicated Tab) */}
+      {activeTab === 'consistency' && (
+        <ProjectConsistencyScorecard
+          evaluations={evaluations}
+          participants={participants}
+          onSelectProject={onSelectProject}
+        />
+      )}
+
+      {/* Tab 6: Regional Performance */}
       {activeTab === 'emirates' && (
         <RegionalPerformanceSection rankings={rankings} />
       )}

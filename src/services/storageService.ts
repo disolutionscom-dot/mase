@@ -56,6 +56,12 @@ class StorageService {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
+        let storedEvals: Evaluation[] = parsed.evaluations || INITIAL_EVALUATIONS;
+        if (Array.isArray(storedEvals) && storedEvals.length < INITIAL_EVALUATIONS.length) {
+          const existingIds = new Set(storedEvals.map((e) => e.EvaluationID));
+          const toAdd = INITIAL_EVALUATIONS.filter((e) => !existingIds.has(e.EvaluationID));
+          storedEvals = [...storedEvals, ...toAdd];
+        }
         return {
           schools: parsed.schools || INITIAL_SCHOOLS,
           categories: parsed.categories || INITIAL_CATEGORIES,
@@ -63,7 +69,7 @@ class StorageService {
           participants: parsed.participants || INITIAL_PARTICIPANTS,
           assignments: parsed.assignments || INITIAL_TABLE_ASSIGNMENTS,
           judges: parsed.judges || INITIAL_JUDGES,
-          evaluations: parsed.evaluations || INITIAL_EVALUATIONS,
+          evaluations: storedEvals,
           settings: { ...INITIAL_SETTINGS, ...(parsed.settings || {}) },
           rubric: parsed.rubric || MASE_RUBRIC,
           auditLog: parsed.auditLog || [],
