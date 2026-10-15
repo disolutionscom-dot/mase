@@ -1,0 +1,6 @@
+JudgeID,Name,Title,Institution,Email,Contact,Categories,AccessCode,Status,Role
+JDG-0001,"Dr. Sarah Mansour, MD, PhD",Associate Professor of Biomedical Sciences,Gulf Medical University,dr.sarah.mansour@gmu.ac.ae,+971 6 743 1333,"Scientific Research, Healthcare & Biomedical Innovation",GMU-7821,Active,Senior Judge
+JDG-0002,"Dr. Ahmed Al-Falasi, MBBS",Consultant Ophthalmologist & Clinical Researcher,Thumbay University Hospital,dr.ahmed.falasi@thumbay.com,+971 6 770 5555,"AI & Digital Health, Healthcare & Biomedical Innovation",GMU-4912,Active,Judge
+JDG-0003,"Prof. Maria Fernandez, DSc",Chair of Pharmacology & Drug Discovery,Gulf Medical University,prof.maria@gmu.ac.ae,+971 6 743 1444,"Scientific Research, Poster Presentation (Senior)",GMU-9033,Active,Chief Judge
+JDG-0004,"Dr. Khalid Al-Zaabi, PhD",Head of Health Informatics & Bioengineering,Ajman University,k.alzaabi@ajman.ac.ae,+971 6 748 2222,"AI & Digital Health, Poster Presentation (Junior)",GMU-3158,Active,Judge
+JDG-0005,"Dr. Fatima Al-Qasimi, MD",Consultant Pediatrician & Research Fellow,Al Qassimi Hospital Sharjah,f.qasimi@mohap.gov.ae,+971 6 538 8888,"Scientific Research, Poster Presentation (Senior)",GMU-6274,Active,Judge

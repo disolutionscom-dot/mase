@@ -12,6 +12,8 @@ import {
   FileSpreadsheet,
   HelpCircle,
   Award,
+  GitBranch,
+  Mail,
 } from 'lucide-react';
 import {
   School,
@@ -90,13 +92,27 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={() => onNavigateTab('emailHub')}
+              className="px-3.5 py-2 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl shadow transition flex items-center gap-1.5"
+            >
+              <Mail className="w-4 h-4 text-purple-200" />
+              <span>Email Dispatcher</span>
+            </button>
+            <button
+              onClick={() => onNavigateTab('githubSheets')}
+              className="px-3.5 py-2 bg-emerald-400 hover:bg-emerald-300 text-emerald-950 text-xs font-bold rounded-xl shadow transition flex items-center gap-1.5"
+            >
+              <GitBranch className="w-4 h-4" />
+              <span>GitHub &amp; Sheets</span>
+            </button>
             <button
               onClick={() => onNavigateTab('googleGuide')}
               className="px-3.5 py-2 bg-[#D4AF37] hover:bg-[#c09d2e] text-[#241900] text-xs font-bold rounded-xl shadow transition flex items-center gap-1.5"
             >
               <HelpCircle className="w-4 h-4" />
-              <span>Google Drive Fix Guide</span>
+              <span>Google Drive Fix</span>
             </button>
             <button
               onClick={() => onNavigateTab('import')}

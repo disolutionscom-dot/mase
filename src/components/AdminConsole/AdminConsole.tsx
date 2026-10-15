@@ -17,6 +17,8 @@ import {
   Trophy,
   Code,
   Sparkles,
+  GitBranch,
+  Mail,
 } from 'lucide-react';
 import {
   School,
@@ -44,6 +46,8 @@ import { AppsScriptCodeBundle } from './AppsScriptCodeBundle';
 import { SystemSettingsComponent } from './SystemSettings';
 import { AwardsPdfPrintModal } from './AwardsPdfPrintModal';
 import { ClaudePromptModal } from './ClaudePromptModal';
+import { GitHubSheetsModal } from './GitHubSheetsModal';
+import { EmailHubModal } from './EmailHubModal';
 
 interface AdminConsoleProps {
   schools: School[];
@@ -111,10 +115,13 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAwardsPdfModalOpen, setIsAwardsPdfModalOpen] = useState(false);
   const [isClaudePromptModalOpen, setIsClaudePromptModalOpen] = useState(false);
+  const [isGitHubSheetsModalOpen, setIsGitHubSheetsModalOpen] = useState(false);
+  const [isEmailHubModalOpen, setIsEmailHubModalOpen] = useState(false);
 
   const navItems = [
     { id: 'overview', label: 'Overview', icon: LayoutDashboard },
     { id: 'judgeActivity', label: 'Judge Monitor', icon: Activity, badge: `${evaluations.filter(e => e.Status === 'Submitted').length} Scored` },
+    { id: 'emailHub', label: 'Email Dispatcher', icon: Mail, highlight: true },
     { id: 'judges', label: 'Judges & Codes', icon: Users },
     { id: 'schools', label: 'Schools', icon: Building2 },
     { id: 'categories', label: 'Categories', icon: Tag },
@@ -123,6 +130,7 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({
     { id: 'rubric', label: 'Evaluation Rubric', icon: BookOpen },
     { id: 'import', label: 'Import Registrations', icon: FileSpreadsheet },
     { id: 'reports', label: 'Reports & Exports', icon: Download },
+    { id: 'githubSheets', label: 'GitHub & Sheets', icon: GitBranch, highlight: true },
     { id: 'awardsPdf', label: 'Ceremony PDF', icon: Trophy, highlight: true },
     { id: 'claudePrompt', label: 'Claude AI Prompt', icon: Sparkles },
     { id: 'appsScriptBundle', label: 'Apps Script Bundle', icon: Code },
@@ -171,6 +179,10 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({
                     setIsAwardsPdfModalOpen(true);
                   } else if (item.id === 'claudePrompt') {
                     setIsClaudePromptModalOpen(true);
+                  } else if (item.id === 'githubSheets') {
+                    setIsGitHubSheetsModalOpen(true);
+                  } else if (item.id === 'emailHub') {
+                    setIsEmailHubModalOpen(true);
                   } else {
                     setActiveTab(item.id);
                   }
@@ -212,6 +224,8 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({
               settings={settings}
               onNavigateTab={(tab) => {
                 if (tab === 'awardsPdf') setIsAwardsPdfModalOpen(true);
+                else if (tab === 'githubSheets') setIsGitHubSheetsModalOpen(true);
+                else if (tab === 'emailHub') setIsEmailHubModalOpen(true);
                 else setActiveTab(tab);
               }}
             />
@@ -318,6 +332,22 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({
       <ClaudePromptModal
         isOpen={isClaudePromptModalOpen}
         onClose={() => setIsClaudePromptModalOpen(false)}
+      />
+
+      {/* GitHub & Google Sheets Deployment Bundle Modal */}
+      <GitHubSheetsModal
+        isOpen={isGitHubSheetsModalOpen}
+        onClose={() => setIsGitHubSheetsModalOpen(false)}
+      />
+
+      {/* Google Apps Script Email Dispatch Center Modal */}
+      <EmailHubModal
+        isOpen={isEmailHubModalOpen}
+        onClose={() => setIsEmailHubModalOpen(false)}
+        judges={judges}
+        participants={participants}
+        schools={schools}
+        rankings={rankings}
       />
     </div>
   );

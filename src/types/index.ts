@@ -251,3 +251,23 @@ export interface RegistrationRequest {
   CreatedAt: string;
   ReviewNote?: string;
 }
+
+export interface EmailLogEntry {
+  id: string;
+  Timestamp: string;
+  RecipientEmail: string;
+  RecipientName: string;
+  RecipientRole: string;
+  CampaignType: string;
+  Subject: string;
+  Status: 'Sent' | 'Failed' | 'Queued';
+  Details?: string;
+  TriggeredBy?: string;
+}
+
+export interface EmailDispatchConfig {
+  webAppUrl: string;
+  autoLogToSheet: boolean;
+  senderName: string;
+}
+

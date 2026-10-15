@@ -1,0 +1,9 @@
+SchoolID,Name,Code,Type,RepName,RepContact,RepEmail,Address,Emirate,Status
+SCH-0001,GEMS Modern Academy,GMA-DXB,Private CBSE/IB,Dr. Anita Roy,+971 4 326 3339,a.roy@gemsmodern.edu,Nad Al Sheba,Dubai,Active
+SCH-0002,Al Noor International School,ANIS-SHJ,Private British,Mr. Tariq Mansoor,+971 6 534 8888,t.mansoor@alnoor.sch.ae,Al Qarayen,Sharjah,Active
+SCH-0003,Dubai College,DC-DXB,British Curriculum,Ms. Claire Jenkins,+971 4 399 9111,c.jenkins@dubaicollege.org,Al Sufouh,Dubai,Active
+SCH-0004,Ajman Academy,AA-AJM,IB World School,Dr. Sameer Al-Hashimi,+971 6 731 4444,s.hashimi@ajmanacademy.sch.ae,Sheikh Ammar St,Ajman,Active
+SCH-0005,Emirates National Schools,ENS-AUH,National / American,Fatima Al Mansoori,+971 2 499 3000,f.mansoori@ens.sch.ae,MBZ City,Abu Dhabi,Active
+SCH-0006,Our Own English High School,OOEHS-FUJ,CBSE,George Philip,+971 9 222 8855,g.philip@gems.sch.ae,Al Faseel,Fujairah,Active
+SCH-0007,Ras Al Khaimah Academy,RAKA-RAK,British / IB,David Evans,+971 7 236 2441,d.evans@raka.sch.ae,Khuzam,Ras Al Khaimah,Active
+SCH-0008,The International School of Choueifat,ISC-UAQ,SABIS,Lina Haddad,+971 6 766 5888,lhaddad@iscuaw.sabis.net,Al Salamah,Umm Al Quwain,Active
