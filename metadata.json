@@ -1,0 +1,6 @@
+{
+  "name": "Gulf Medical University MASE Live Judging Platform",
+  "description": "Real-time evaluation, live ranking dashboard, and secure judging portal for Gulf Medical University Annual Medical and Science Exhibition (MASE).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
